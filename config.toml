@@ -1,0 +1,14 @@
+# MongoDB配置
+MongoURI = "mongodb://localhost:27017"
+DatabaseName = "yzsa"
+
+# 密码哈希盐
+Salt = "Supported_by_ITI"
+
+# Redis配置
+RedisAddr = "127.0.0.1:6379"
+RedisPWD = "123456"
+
+# 需要使用Redis两个数据库，填写编号
+RedisTokenId = 0
+RedisCacheId = 1
