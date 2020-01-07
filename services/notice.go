@@ -22,6 +22,6 @@ func (*notice) Open(t *models.Task) bool {
 	return utils.Cache.HSetMany(t.Id, t.Info)
 }
 
-func (*notice) Response(t *models.Task, userId string, resp map[string]interface{}) bool {
-	return true
+func (*notice) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
+	return 200, "成功"
 }

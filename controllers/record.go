@@ -54,11 +54,8 @@ func (*record) Response(c *gin.Context) {
 		c.String(400, "参数错误，需要data")
 		return
 	}
-	if services.Task.Response(c.Keys["task"].(*models.Task), user, input.Data) {
-		c.String(200, "成功")
-	} else {
-		c.String(400, "失败")
-	}
+	code, reason := services.Task.Response(c.Keys["task"].(*models.Task), user, input.Data)
+	c.String(code, reason)
 }
 
 var Record = new(record)

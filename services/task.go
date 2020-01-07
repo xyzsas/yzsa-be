@@ -7,7 +7,7 @@ import (
 
 var Index map[string]interface {
 	Open(*models.Task) bool
-	Response(*models.Task, string, map[string]interface{}) bool
+	Response(*models.Task, string, map[string]interface{}) (code int, reason string)
 }
 
 type task struct{}
@@ -64,12 +64,12 @@ func (*task) Open(t *models.Task) bool {
 	return Index[t.Type].Open(t)
 }
 
-func (*task) Response(t *models.Task, userId string, resp map[string]interface{}) (res bool) {
+func (*task) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
 	if Index[t.Type] == nil {
-		return false
+		return 404, "任务不存在"
 	}
-	res = Index[t.Type].Response(t, userId, resp)
-	if res {
+	code, reason = Index[t.Type].Response(t, userId, resp)
+	if code == 200 {
 		utils.Cache.SAdd(t.Id+"_record", userId)
 	}
 	return

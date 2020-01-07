@@ -15,10 +15,10 @@ func (*courseSelect) Open(t *models.Task) bool {
 	return utils.Cache.HSetMany(t.Id, t.Info)
 }
 
-func (*courseSelect) Response(t *models.Task, userId string, resp map[string]interface{}) bool {
+func (*courseSelect) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
 	u := &models.User{Id: userId}
 	if !u.Get() || u.Role != "student" {
-		return false
+		return 403, "仅学生可以选课"
 	}
 	res := utils.Cache.Run(
 		`
@@ -39,9 +39,13 @@ func (*courseSelect) Response(t *models.Task, userId string, resp map[string]int
 		[]string{t.Id, resp["course"].(string)},
 	)
 	if res.(int64) == 0 {
-		return false
+		return 403, "课程无名额"
 	} else {
 		r := &models.Record{Id: t.Id}
-		return r.AddRecord(userId, resp["course"].(string))
+		if r.AddRecord(userId, resp["course"].(string)) {
+			return 200, "成功"
+		} else {
+			return 500, "服务器错误"
+		}
 	}
 }
