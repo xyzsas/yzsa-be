@@ -59,12 +59,13 @@ func main() {
 			A.PUT("/permission", controllers.Permission.Update)        // 修改权限节点
 			A.DELETE("/permission/:id", controllers.Permission.Delete) // 删除权限节点
 			// 对用户的操作
-			A.GET("/user", controllers.User.GetList)          // 用户列表
-			A.POST("/user", controllers.User.Insert)          // 添加用户
-			A.GET("/user/:id", controllers.User.GetOne)       // 获取用户信息
-			A.PUT("/user/:id", controllers.User.Update)       // 修改用户权限
-			A.DELETE("/user/:id", controllers.User.Delete)    // 删除用户
-			A.PUT("/user/:id/pwd", controllers.User.ResetPwd) // 重置用户密码
+			A.GET("/user", controllers.User.GetList)                         // 用户列表
+			A.POST("/user", controllers.User.Insert)                         // 添加用户
+			A.GET("/user/:id", controllers.User.GetOne)                      // 获取用户信息
+			A.DELETE("/user/:id", controllers.User.Delete)                   // 删除用户
+			A.PUT("/user/:id/permission", controllers.User.UpdatePermission) // 修改用户权限
+			A.PUT("/user/:id/name", controllers.User.UpdateName)             // 修改用户名称
+			A.PUT("/user/:id/pwd", controllers.User.ResetPwd)                // 重置用户密码
 		}
 	}
 

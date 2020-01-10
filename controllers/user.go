@@ -169,7 +169,31 @@ func (*user) Update(c *gin.Context) {
 		return
 	}
 	if utils.Token.Delete(id) {
-		c.String(200, "用户修改成功")
+		c.String(200, "用户权限节点修改成功")
+	}
+}
+
+func (*user) UpdateName(c *gin.Context) {
+	var input struct {
+		Name string `json:"name" binding:"required"`
+	}
+	if c.ShouldBind(&input) != nil {
+		c.String(400, "参数错误，需要name")
+		return
+	}
+	id := c.Param("id")
+	u := &models.User{Id: id}
+	if !u.Get() {
+		c.String(404, "该用户不存在")
+		return
+	}
+	u.Name = input.Name
+	if !u.Update() {
+		c.String(500, "服务器错误")
+		return
+	}
+	if utils.Token.Delete(id) {
+		c.String(200, "用户名称修改成功")
 	} else {
 		c.String(500, "服务器错误")
 	}
