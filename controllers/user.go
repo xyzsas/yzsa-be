@@ -145,7 +145,7 @@ func (*user) Insert(c *gin.Context) {
 	c.String(200, "添加成功")
 }
 
-func (*user) Update(c *gin.Context) {
+func (*user) UpdatePermission(c *gin.Context) {
 	var input struct {
 		Permission string `json:"permission" binding:"required"`
 	}
@@ -170,6 +170,8 @@ func (*user) Update(c *gin.Context) {
 	}
 	if utils.Token.Delete(id) {
 		c.String(200, "用户权限节点修改成功")
+	} else {
+		c.String(500, "服务器错误")
 	}
 }
 
