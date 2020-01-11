@@ -36,19 +36,29 @@ func (*task) GetRealTime(c *gin.Context) {
 }
 
 func (*task) Insert(c *gin.Context) {
-	var input models.Task
+	var input struct {
+		Title string `json:"title" binding:"required"`
+		Type  string `json:"type" binding:"required"`
+	}
 	if c.ShouldBind(&input) != nil {
-		c.String(400, "参数错误，需要title, type, info")
+		c.String(400, "参数错误，需要title, type")
 		return
 	}
-	input.Id = utils.GetRandomString(16)
-	if !input.Insert() {
+	task := &models.Task{
+		Id:    utils.GetRandomString(16),
+		Title: input.Title,
+		Type:  input.Type,
+		Start: 0,
+		End:   0,
+		Info:  make(map[string]interface{}, 0),
+	}
+	if !task.Insert() {
 		c.String(500, "服务器错误")
 		return
 	}
-	if (&models.Permission{Id: c.Keys["user"].(*models.User).Permission}).AddTask(input.Id) &&
-		(&models.Permission{Id: "admin"}).AddTask(input.Id) &&
-		(&models.Record{Id: input.Id, Records: make(map[string]interface{}, 0)}).Insert() {
+	if (&models.Permission{Id: c.Keys["user"].(*models.User).Permission}).AddTask(task.Id) &&
+		(&models.Permission{Id: "admin"}).AddTask(task.Id) &&
+		(&models.Record{Id: task.Id, Records: make(map[string]interface{}, 0)}).Insert() {
 		c.String(200, "添加成功")
 	} else {
 		c.String(403, "权限节点不存在")
