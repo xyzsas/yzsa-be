@@ -6,7 +6,6 @@
 package services
 
 import (
-	"fmt"
 	"yzsa-be/models"
 	"yzsa-be/utils"
 )
@@ -18,7 +17,6 @@ func init() {
 }
 
 func (*notice) Open(t *models.Task) bool {
-	fmt.Println(t)
 	return utils.Cache.HSetMany(t.Id, t.Info)
 }
 
