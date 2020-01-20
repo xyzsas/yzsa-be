@@ -15,6 +15,10 @@ func (*courseSelect) Open(t *models.Task) bool {
 	return utils.Cache.HSetMany(t.Id, t.Info)
 }
 
+func (*courseSelect) Realtime(t *models.Task) interface{} {
+	return utils.Cache.HGetAll(t.Id)
+}
+
 func (*courseSelect) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
 	u := &models.User{Id: userId}
 	if !u.Get() || u.Role != "student" {

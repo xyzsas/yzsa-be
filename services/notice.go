@@ -7,7 +7,6 @@ package services
 
 import (
 	"yzsa-be/models"
-	"yzsa-be/utils"
 )
 
 type notice struct{}
@@ -17,7 +16,11 @@ func init() {
 }
 
 func (*notice) Open(t *models.Task) bool {
-	return utils.Cache.HSetMany(t.Id, t.Info)
+	return true
+}
+
+func (*notice) Realtime(t *models.Task) interface{} {
+  return t.Info
 }
 
 func (*notice) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {

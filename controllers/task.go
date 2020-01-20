@@ -30,8 +30,7 @@ func (*task) GetOne(c *gin.Context) {
 }
 
 func (*task) GetRealTime(c *gin.Context) {
-	task := c.Param("id")
-	res := utils.Cache.HGetAll(task)
+	res := services.Task.Realtime(c.Keys["task"].(*models.Task))
 	c.JSON(200, res)
 }
 

@@ -7,6 +7,7 @@ import (
 
 var Index map[string]interface {
 	Open(*models.Task) bool
+	Realtime(*models.Task) interface{}
 	Response(*models.Task, string, map[string]interface{}) (code int, reason string)
 }
 
@@ -62,6 +63,13 @@ func (*task) Open(t *models.Task) bool {
 		return false
 	}
 	return Index[t.Type].Open(t)
+}
+
+func (*task) Realtime(t *models.Task) interface{} {
+	if Index[t.Type] == nil {
+		return nil
+	}
+	return Index[t.Type].Realtime(t)
 }
 
 func (*task) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
