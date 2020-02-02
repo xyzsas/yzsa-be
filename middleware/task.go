@@ -33,7 +33,7 @@ func Task(admin bool) gin.HandlerFunc {
 			c.String(403, "权限不足")
 			return
 		}
-		if !admin && !utils.Cache.Exist(task) {
+		if !admin && t.Start == 0 {
 			c.Abort()
 			c.String(409, "任务未开放")
 			return

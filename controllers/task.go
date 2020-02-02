@@ -61,7 +61,7 @@ func (*task) Update(c *gin.Context) {
 		c.String(400, "参数错误，需要type, title, info")
 		return
 	}
-	if utils.Cache.Exist(id) {
+	if c.Keys["task"].(*models.Task).Start != 0 {
 		c.String(409, "任务正在进行中")
 		return
 	}
@@ -75,7 +75,7 @@ func (*task) Update(c *gin.Context) {
 
 func (*task) Delete(c *gin.Context) {
 	id := c.Param("id")
-	if utils.Cache.Exist(id) {
+	if c.Keys["task"].(*models.Task).Start != 0 {
 		c.String(409, "任务正在进行中")
 		return
 	}
@@ -99,12 +99,11 @@ func (*task) Open(c *gin.Context) {
 		c.String(400, "参数错误，需要start, end")
 		return
 	}
-	id := c.Param("id")
-	if utils.Cache.Exist(id) {
+	t := c.Keys["task"].(*models.Task)
+	if t.Start != 0 {
 		c.String(409, "任务正在进行中")
 		return
 	}
-	t := c.Keys["task"].(*models.Task)
 	t.Start = input.Start
 	t.End = input.End
 	if !t.Update() {
@@ -124,9 +123,9 @@ func (*task) Close(c *gin.Context) {
 	t.Start = 0
 	t.End = 0
 	if t.Update() && utils.Cache.Delete(id) && utils.Cache.Delete(id+"_record") {
-		c.String(500, "任务关闭成功")
+		c.String(200, "任务关闭成功")
 	} else {
-		c.String(200, "任务关闭失败")
+		c.String(500, "任务关闭失败")
 	}
 }
 
