@@ -8,6 +8,7 @@ import (
 
 type Permission struct {
 	Id     string   `bson:"_id" json:"id" binding:"required"`
+	Name   string   `bson:"name" json:"name"`
 	Father string   `bson:"father" json:"father" binding:"required"`
 	Tasks  []string `bson:"tasks" json:"tasks"`
 }
@@ -17,20 +18,26 @@ var permissionCollection *mongo.Collection
 func init() {
 	permissionCollection = model.Collection("permission")
 	people := &Permission{
-		Id:    "people",
-		Tasks: make([]string, 0),
+		Id:     "people",
+		Name:   "用户",
+		Father: "",
+		Tasks:  make([]string, 0),
 	}
 	admin := &Permission{
-		Id:    "admin",
-		Tasks: make([]string, 0),
+		Id:     "admin",
+		Name:   "管理员",
+		Father: "",
+		Tasks:  make([]string, 0),
 	}
 	student := &Permission{
 		Id:     "student",
+		Name:   "学生",
 		Father: "people",
 		Tasks:  make([]string, 0),
 	}
 	teacher := &Permission{
 		Id:     "teacher",
+		Name:   "教师",
 		Father: "people",
 		Tasks:  make([]string, 0),
 	}
