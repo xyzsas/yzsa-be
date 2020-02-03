@@ -54,19 +54,25 @@ func (*permission) Update(c *gin.Context) {
 		c.String(404, "该权限节点不存在")
 		return
 	}
-	father := &models.Permission{Id: input.Father}
-	if !father.Get() {
-		c.String(403, "父节点不存在")
-		return
+	if input.Id == "people" || input.Id == "admin" {
+		if input.Father != "" {
+			c.String(403, "权限不足")
+			return
+		}
+	} else if input.Id == "student" || input.Id == "teacher" {
+		if input.Father != "people" {
+			c.String(403, "权限不足")
+			return
+		}
+	} else {
+		father := &models.Permission{Id: input.Father}
+		if !father.Get() {
+			c.String(403, "父节点不存在")
+			return
+		}
 	}
 	if len(input.Tasks) == 0 {
 		input.Tasks = make([]string, 0)
-	}
-	if input.Id == "people" || input.Id == "admin" {
-		input.Father = ""
-	}
-	if input.Id == "student" || input.Id == "teacher" {
-		input.Father = "people"
 	}
 	if !input.Update() {
 		c.String(500, "服务器错误")
