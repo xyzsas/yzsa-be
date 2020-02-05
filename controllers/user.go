@@ -138,6 +138,7 @@ func (*user) Insert(c *gin.Context) {
 		c.String(400, "该用户已存在")
 		return
 	}
+	input.Password = utils.HASH(input.Id, utils.Config.Salt)
 	if !input.Insert() {
 		c.String(500, "服务器错误")
 		return
@@ -161,6 +162,11 @@ func (*user) UpdatePermission(c *gin.Context) {
 	}
 	if u.Role == "admin" || input.Permission == "admin" {
 		c.String(403, "权限不足")
+		return
+	}
+	p := &models.Permission{Id: input.Permission}
+	if !p.Get() {
+		c.String(403, "权限节点不存在")
 		return
 	}
 	u.Permission = input.Permission
