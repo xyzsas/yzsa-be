@@ -1,6 +1,7 @@
 package services
 
 import (
+	"go.mongodb.org/mongo-driver/bson"
 	"yzsa-be/models"
 	"yzsa-be/utils"
 )
@@ -52,7 +53,7 @@ func (*courseSelect) Response(t *models.Task, userId string, resp map[string]int
 		return 403, "课程无名额"
 	} else {
 		r := &models.Record{Id: t.Id}
-		if r.AddRecord(userId, resp["course"].(string)) {
+		if r.AddRecord(userId, bson.M{"course" : resp["course"].(string)}) {
 			return 200, "成功"
 		} else {
 			return 500, "服务器错误"

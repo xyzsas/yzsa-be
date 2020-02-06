@@ -34,18 +34,19 @@
 
 教师可访问
 
-| 相对路由                | HTTP方法 | 说明                 |
-| ----------------------- | -------- | -------------------- |
-| `/task`                 | `GET`    | 获取可管理任务列表   |
-| `/task/:id`             | `GET`    | 获取任务详细信息     |
-| `/task`                 | `POST`   | 新建任务             |
-| `/task/:id`             | `PUT`    | 修改任务             |
-| `/task/:id/open`        | `PUT`    | 开启任务             |
-| `/task/:id/close`       | `PUT`    | 关闭任务             |
-| `/task/:id`             | `DELETE` | 删除任务             |
-| `/record/:id`           | `GET`    | 读取任务全部记录     |
-| `/permission/:id`       | `POST`   | 添加临时权限         |
-| `/permission/:id/:user` | `DELETE` | 删除临时权限         |
+| 相对路由                | HTTP方法 | 说明                   |
+| ----------------------- | -------- | ---------------------- |
+| `/task`                 | `GET`    | 获取可管理任务列表     |
+| `/task/:id`             | `GET`    | 获取任务详细信息       |
+| `/task`                 | `POST`   | 新建任务               |
+| `/task/:id`             | `PUT`    | 修改任务               |
+| `/task/:id/open`        | `PUT`    | 开启任务               |
+| `/task/:id/close`       | `PUT`    | 关闭任务               |
+| `/task/:id`             | `DELETE` | 删除任务               |
+| `/task/:id/user`        | `GET`    | 获取拥有权限的用户列表 |
+| `/record/:id`           | `GET`    | 读取任务全部记录       |
+| `/permission/:id`       | `POST`   | 添加临时权限           |
+| `/permission/:id/:user` | `DELETE` | 删除临时权限           |
 
 ## Admin
 

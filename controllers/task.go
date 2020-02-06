@@ -129,4 +129,28 @@ func (*task) Close(c *gin.Context) {
 	}
 }
 
+func (*task) GetUser(c *gin.Context) {
+	id := c.Param("id")
+	permissions := make([]string, 0)
+	for _, v := range (&models.Permission{}).GetByTask(id) {
+		permissions = append(permissions, v.Id)
+	}
+	for i := 0; i < len(permissions); i++ {
+		cur := &models.Permission{Id: permissions[i]}
+		if !cur.Get() {
+			continue
+		} else {
+			for _, v := range cur.GetChildren() {
+				permissions = append(permissions, v.Id)
+			}
+		}
+	}
+	res := (&models.User{}).GetGroup(permissions)
+	if res == nil {
+		c.String(500, "服务器错误")
+	} else {
+		c.JSON(200, res)
+	}
+}
+
 var Task = new(task)

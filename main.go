@@ -44,6 +44,7 @@ func main() {
 			T.PUT("/task/:id/open", middleware.Task(true), controllers.Task.Open)                       // 开启任务
 			T.PUT("/task/:id/close", middleware.Task(true), controllers.Task.Close)                     // 关闭任务
 			T.DELETE("/task/:id", middleware.Task(true), controllers.Task.Delete)                       // 删除任务
+			T.GET("/task/:id/user", middleware.Task(true), controllers.Task.GetUser)                    // 获取拥有任务权限的所有用户
 			T.GET("/record/:id", middleware.Task(true), controllers.Record.GetAll)                      // 获取任务全部记录
 			T.POST("/permission/:id", middleware.Task(true), controllers.Permission.AddTemp)            // 添加临时权限
 			T.DELETE("/permission/:id/:user", middleware.Task(true), controllers.Permission.DeleteTemp) // 删除临时权限

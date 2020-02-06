@@ -42,7 +42,7 @@ func (u *User) Get() bool {
 	return err == nil
 }
 
-func (u *User) GetByRole(role string) (results []User) {
+func (u *User) GetByRole(role string) (results []*User) {
 	cur, err := userCollection.Find(context.TODO(), bson.D{{"role", role}}, nil)
 	if err != nil {
 		return
@@ -53,13 +53,13 @@ func (u *User) GetByRole(role string) (results []User) {
 		if err != nil {
 			panic(err)
 		}
-		results = append(results, elem)
+		results = append(results, &elem)
 	}
 	_ = cur.Close(context.TODO())
 	return
 }
 
-func (u *User) GetByPermission(permission string) (results []User) {
+func (u *User) GetByPermission(permission string) (results []*User) {
 	cur, err := userCollection.Find(context.TODO(), bson.D{{"permission", permission}}, nil)
 	if err != nil {
 		return
@@ -70,7 +70,7 @@ func (u *User) GetByPermission(permission string) (results []User) {
 		if err != nil {
 			panic(err)
 		}
-		results = append(results, elem)
+		results = append(results, &elem)
 	}
 	_ = cur.Close(context.TODO())
 	return
@@ -89,4 +89,21 @@ func (u *User) Delete() bool {
 func (u *User) DeleteGroup(permissions []string) bool {
 	_, err := userCollection.DeleteMany(context.TODO(), bson.M{"permission": bson.M{"$in": permissions}}, nil)
 	return err == nil
+}
+
+func (u *User) GetGroup(permissions []string) (results []*User) {
+	cur, err := userCollection.Find(context.TODO(), bson.M{"permission": bson.M{"$in": permissions}}, nil)
+	if err != nil {
+		return
+	}
+	for cur.Next(context.TODO()) {
+		var elem User
+		err := cur.Decode(&elem)
+		if err != nil {
+			panic(err)
+		}
+		results = append(results, &elem)
+	}
+	_ = cur.Close(context.TODO())
+	return
 }

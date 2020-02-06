@@ -66,7 +66,7 @@ func (p *Permission) Get() bool {
 	return err == nil
 }
 
-func (p *Permission) getMany(filter bson.D) (results []Permission) {
+func (p *Permission) getMany(filter bson.D) (results []*Permission) {
 	cur, err := permissionCollection.Find(context.TODO(), filter, nil)
 	if err != nil {
 		return
@@ -77,17 +77,17 @@ func (p *Permission) getMany(filter bson.D) (results []Permission) {
 		if err != nil {
 			panic(err)
 		}
-		results = append(results, elem)
+		results = append(results, &elem)
 	}
 	_ = cur.Close(context.TODO())
 	return
 }
 
-func (p *Permission) GetAll() []Permission {
+func (p *Permission) GetAll() []*Permission {
 	return p.getMany(bson.D{{}})
 }
 
-func (p *Permission) GetChildren() []Permission {
+func (p *Permission) GetChildren() []*Permission {
 	return p.getMany(bson.D{{"father", p.Id}})
 }
 
@@ -114,4 +114,8 @@ func (p *Permission) DeleteList(list []string) bool {
 func (p *Permission) DeleteTask(task string) bool {
 	_, err := permissionCollection.UpdateMany(context.TODO(), bson.M{"tasks": bson.M{"$regex": task}}, bson.M{"$pull": bson.M{"tasks": task}})
 	return err == nil
+}
+
+func (p *Permission) GetByTask(task string) []*Permission {
+	return p.getMany(bson.D{{"tasks", bson.M{"$regex": task}}})
 }
