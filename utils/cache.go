@@ -73,6 +73,12 @@ func (c *cache) HGetAll(key string) map[string]string {
 	return res
 }
 
+// 取Set中Key的数目
+func (c *cache) SCard(key string) int64 {
+	res, _ := cacheDB.SCard(key).Result()
+	return res
+}
+
 // 向Set中添加一个元素
 func (c *cache) SAdd(key, value string) bool {
 	err := cacheDB.SAdd(key, value).Err()

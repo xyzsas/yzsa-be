@@ -39,6 +39,7 @@ func main() {
 		{
 			T.GET("/task", controllers.Task.GetList)                                                    // 获取所有任务
 			T.GET("/task/:id", middleware.Task(true), controllers.Task.GetOne)                          // 获取任务详细信息
+			T.GET("/task/:id/runtime", middleware.Task(true), controllers.Task.GetRuntime)              // 获取任务运行信息
 			T.POST("/task", controllers.Task.Insert)                                                    // 新建任务
 			T.PUT("/task/:id", middleware.Task(true), controllers.Task.Update)                          // 修改任务
 			T.PUT("/task/:id/open", middleware.Task(true), controllers.Task.Open)                       // 开启任务

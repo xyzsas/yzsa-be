@@ -29,6 +29,16 @@ func (*task) GetOne(c *gin.Context) {
 	c.JSON(200, c.Keys["task"].(*models.Task))
 }
 
+func (*task) GetRuntime(c *gin.Context) {
+	t := c.Keys["task"].(*models.Task)
+	res := services.Task.Realtime(t)
+	count := utils.Cache.SCard(t.Id+"_record")
+	c.JSON(200, gin.H{
+		"count": count,
+		"realTime": res,
+	})
+}
+
 func (*task) GetRealTime(c *gin.Context) {
 	res := services.Task.Realtime(c.Keys["task"].(*models.Task))
 	c.JSON(200, res)

@@ -16,6 +16,11 @@ func (*record) GetAll(c *gin.Context) {
 		c.String(404, "记录不存在")
 		return
 	}
+	t := c.Keys["task"].(*models.Task)
+	if t.Start == 0 {
+		c.String(403, "任务已关闭")
+		return
+	}
 	res := make(map[string]interface{})
 	for k, v := range r.Records {
 		if utils.Cache.SExist(id+"_record", k) {
