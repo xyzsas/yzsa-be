@@ -16,7 +16,7 @@ func (*permission) GetList(c *gin.Context) {
 func (*permission) Insert(c *gin.Context) {
 	var input models.Permission
 	if c.ShouldBind(&input) != nil {
-		c.String(400, "参数错误，需要id, father")
+		c.String(400, "参数错误，需要id")
 		return
 	}
 	if input.Father == "admin" {
@@ -46,7 +46,7 @@ func (*permission) Insert(c *gin.Context) {
 func (*permission) Update(c *gin.Context) {
 	var input models.Permission
 	if c.ShouldBind(&input) != nil {
-		c.String(400, "参数错误，需要id, father")
+		c.String(400, "参数错误，需要id")
 		return
 	}
 	old := &models.Permission{Id: input.Id}

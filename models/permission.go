@@ -9,7 +9,7 @@ import (
 type Permission struct {
 	Id     string   `bson:"_id" json:"id" binding:"required"`
 	Name   string   `bson:"name" json:"name"`
-	Father string   `bson:"father" json:"father" binding:"required"`
+	Father string   `bson:"father" json:"father"`
 	Tasks  []string `bson:"tasks" json:"tasks"`
 }
 
