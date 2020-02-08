@@ -48,5 +48,5 @@ func (r *Record) GetRecord(id string) bool {
 	opt := options.FindOne()
 	opt.Projection = bson.D{{"records." + id, 1}}
 	err := recordCollection.FindOne(context.TODO(), bson.D{{"_id", r.Id}}, opt).Decode(r)
-	return err == nil
+	return err == nil && len(r.Records) != 0
 }

@@ -38,7 +38,7 @@ func (*record) GetOne(c *gin.Context) {
 		return
 	}
 	r := &models.Record{Id: id}
-	if !r.GetRecord(user) || len(r.Records) == 0 {
+	if !r.GetRecord(user) {
 		c.String(200, "任务已完成")
 		return
 	}
