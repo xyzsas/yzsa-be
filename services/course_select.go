@@ -25,11 +25,17 @@ func (*courseSelect) Response(t *models.Task, userId string, resp map[string]int
 	if !u.Get() || u.Role != "student" {
 		return 403, "仅学生可以选课"
 	}
-	if _, ok := resp["course"]; !ok {
+	_, ok := resp["course"]
+	if !ok {
 		return 400, "参数错误，需要data.course"
 	}
-	if _, ok := resp["course"].(string); !ok {
+	course, ok := resp["course"].(string)
+	if !ok {
 		return 400, "参数错误，需要data.course"
+	}
+	r := &models.Record{Id: t.Id}
+	if r.GetRecord(userId) && (r.Records[userId].(map[string]interface{}))["course"].(string) == course {
+		return 403, "此次选择课程不得与上次相同"
 	}
 	res := utils.Cache.Run(
 		`
