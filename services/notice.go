@@ -6,6 +6,7 @@
 package services
 
 import (
+	"go.mongodb.org/mongo-driver/bson"
 	"yzsa-be/models"
 )
 
@@ -24,5 +25,10 @@ func (*notice) Realtime(t *models.Task) interface{} {
 }
 
 func (*notice) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
-	return 200, "成功"
+	r := &models.Record{Id: t.Id}
+	if r.AddRecord(userId, bson.M{"read": true}) {
+		return 200, "成功"
+	} else {
+		return 500, "服务器错误"
+	}
 }

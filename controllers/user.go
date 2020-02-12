@@ -135,7 +135,7 @@ func (*user) Insert(c *gin.Context) {
 	}
 	u := &models.User{Id: input.Id}
 	if u.Get() {
-		c.String(400, "该用户已存在")
+		c.String(403, "该用户已存在")
 		return
 	}
 	input.Password = utils.HASH(input.Id, utils.Config.Salt)
