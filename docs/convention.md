@@ -50,7 +50,8 @@
 ```
 Info
 {
-    "content": "通知内容"
+    "content": "通知内容",
+    "readTime": 阅读时间秒数
 }
 
 Response
