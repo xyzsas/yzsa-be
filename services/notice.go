@@ -1,8 +1,3 @@
-/* YZSA - Notice
- * Info: content: [text]
- * Record: userid: true
- */
-
 package services
 
 import (
@@ -21,7 +16,7 @@ func (*notice) Open(t *models.Task) bool {
 }
 
 func (*notice) Realtime(t *models.Task) interface{} {
-  return t.Info
+	return t.Info
 }
 
 func (*notice) Response(t *models.Task, userId string, resp map[string]interface{}) (code int, reason string) {
