@@ -77,7 +77,7 @@ func (*token) Set(id string) string {
 }
 
 func (*token) SetOverride(id, task string, expire int64) bool {
-	err := tokenDB.Set(id+"_"+task, "OVERRIDE", time.Minute*time.Duration(expire)).Err()
+	err := tokenDB.Set(id+"_"+task, "OVERRIDE", time.Second*time.Duration(expire)).Err()
 	return err == nil
 }
 
