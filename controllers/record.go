@@ -18,7 +18,7 @@ func (*record) GetAll(c *gin.Context) {
 	}
 	t := c.Keys["task"].(*models.Task)
 	if t.Start == 0 {
-		c.String(403, "任务已关闭")
+		c.JSON(200, r.Records)
 		return
 	}
 	res := make(map[string]interface{})

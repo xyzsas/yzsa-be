@@ -68,7 +68,7 @@ func (*token) GetHandShake(id string) (token string, expire int64) {
 func (*token) Set(id string) string {
 	key := id
 	token := GetRandomString(64)
-	err := tokenDB.Set(key, token, time.Minute*10).Err()
+	err := tokenDB.Set(key, token, time.Hour).Err()
 	if err != nil {
 		return ""
 	} else {
