@@ -24,7 +24,7 @@ func UserAuth() gin.HandlerFunc {
 			c.Next()
 		} else {
 			c.Abort()
-			c.String(401, "您未登录或登陆超时，请重新登陆")
+			c.String(401, "很抱歉，需要验证您的身份")
 		}
 	}
 }

@@ -43,7 +43,7 @@ func (*user) Login(c *gin.Context) {
 	}
 	u := &models.User{Id: input.Id}
 	if !u.Get() || utils.HASH(u.Password, token) != input.Password {
-		c.String(403, "账户名或密码错误")
+		c.String(403, "请输入正确的用户名和密码！")
 		return
 	}
 	token = utils.Token.Set(u.Id)
@@ -80,7 +80,7 @@ func (*user) UpdatePwd(c *gin.Context) {
 		return
 	}
 	if u.Password != utils.HASH(input.OldPwd, utils.Config.Salt) {
-		c.String(403, "原密码错误，请重试")
+		c.String(403, "请输入正确的原始密码！")
 		return
 	}
 	u.Password = utils.HASH(input.NewPwd, utils.Config.Salt)
